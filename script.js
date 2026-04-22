@@ -90,7 +90,7 @@ if (copyAliasBtn && aliasText) {
 function setupOpeningExperience() {
   const launch = () => {
     const elapsed = performance.now() - pageStartTime;
-    const minLoaderTime = reduceMotion.matches ? 0 : 1680;
+    const minLoaderTime = reduceMotion.matches ? 0 : 1950;
     const waitTime = Math.max(0, minLoaderTime - elapsed);
 
     window.setTimeout(() => {
@@ -98,7 +98,7 @@ function setupOpeningExperience() {
         pageLoader.classList.add("is-hidden");
         window.setTimeout(() => {
           pageLoader.setAttribute("aria-hidden", "true");
-        }, reduceMotion.matches ? 0 : 560);
+        }, reduceMotion.matches ? 0 : 760);
       }
 
       runHeroSequence();
@@ -123,9 +123,9 @@ function runHeroSequence() {
   }
 
   const steps = [
-    { key: "photos", delay: 90 },
-    { key: "names", delay: 240 },
-    { key: "details", delay: 370 },
+    { key: "names", delay: 120 },
+    { key: "photos", delay: 340 },
+    { key: "details", delay: 560 },
   ];
 
   steps.forEach(({ key, delay }) => {
