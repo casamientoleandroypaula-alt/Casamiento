@@ -928,7 +928,7 @@ main,
   position: relative;
   background-image: url("img/final.jpg");
   background-size: cover;
-  background-position: center 62%;
+  background-position: center 52%;
   padding: clamp(100px, 18vh, 160px) 20px;
   text-align: center;
   color: white;
@@ -967,7 +967,8 @@ main,
 .closing-content {
   position: relative;
   z-index: 1;
-  max-width: 600px;
+  max-width: 700px;
+  padding: 0 10px;
 }
 
 .closing-line {
@@ -976,6 +977,10 @@ main,
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   line-height: 1.4;
   text-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+.closing-line + .closing-line {
+  margin-top: 4px;
 }
 
 .music-toggle {
@@ -1240,7 +1245,7 @@ main,
   .closing {
     padding: clamp(90px, 16vh, 120px) 18px;
     min-height: 62vh;
-    background-position: center 58%;
+    background-position: center 50%;
   }
 
   .closing-content {
