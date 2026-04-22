@@ -1273,7 +1273,7 @@ main,
 
 @media (max-width: 768px) {
   .closing {
-    background-position: 32% 52%;
+    background-position: 30% 52%;
     padding: 80px 16px;
     width: calc(100% - 20px);
     margin: 0 auto 26px;
