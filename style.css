@@ -365,6 +365,15 @@ main,
   padding: 0 10px;
 }
 
+.hero-images {
+  justify-content: center;
+}
+
+.hero-img-left:only-child {
+  width: min(70%, 420px);
+  rotate: 0deg;
+}
+
 .hero-img-left,
 .hero-img-right {
   width: min(44%, 372px);
