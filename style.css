@@ -928,7 +928,7 @@ main,
   position: relative;
   background-image: url("img/final.jpg");
   background-size: cover;
-  background-position: center 48%;
+  background-position: 50% calc(46% + var(--closing-parallax-y, 0px));
   padding: clamp(100px, 18vh, 160px) 20px;
   text-align: center;
   color: white;
@@ -938,13 +938,14 @@ main,
   overflow: hidden;
   min-height: clamp(420px, 74vh, 720px);
   isolation: isolate;
+  width: min(var(--container), calc(100% - 32px));
+  margin: 0 auto 34px;
+  border-radius: 24px;
 }
 
 @media (min-width: 769px) {
   .closing {
-    width: min(1200px, calc(100% - 40px));
-    margin: 0 auto;
-    border-radius: 24px;
+    background-position: 50% calc(44% + var(--closing-parallax-y, 0px));
   }
 }
 
@@ -1253,7 +1254,7 @@ main,
   .closing {
     padding: 80px 16px;
     min-height: 62vh;
-    background-position: center 42%;
+    background-position: 44% calc(42% + var(--closing-parallax-y, 0px));
   }
 
   .closing-content {
@@ -1272,8 +1273,11 @@ main,
 
 @media (max-width: 768px) {
   .closing {
-    background-position: center 42%;
+    background-position: 42% 40%;
     padding: 80px 16px;
+    width: calc(100% - 20px);
+    margin: 0 auto 26px;
+    min-height: 60vh;
   }
 }
 
@@ -1302,5 +1306,9 @@ main,
 
   .js .hero-seq {
     opacity: 1;
+  }
+
+  .closing {
+    --closing-parallax-y: 0px;
   }
 }

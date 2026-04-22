@@ -70,6 +70,7 @@ const observer = new IntersectionObserver(
 revealElements.forEach((el) => observer.observe(el));
 
 setupHeroParallax();
+setupClosingParallax();
 setupMusicControls();
 setupOpeningExperience();
 setupRsvpForm();
@@ -467,4 +468,43 @@ function setupCountdown() {
 
   updateCountdown();
   window.setInterval(updateCountdown, 1000);
+}
+
+function setupClosingParallax() {
+  const closingSection = document.querySelector(".closing");
+  if (!closingSection) return;
+  if (reduceMotion.matches) return;
+  if (window.matchMedia("(max-width: 768px)").matches) return;
+
+  let ticking = false;
+
+  const updateParallax = () => {
+    const rect = closingSection.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || 1;
+
+    if (rect.bottom <= 0 || rect.top >= viewportHeight) {
+      closingSection.style.setProperty("--closing-parallax-y", "0px");
+      ticking = false;
+      return;
+    }
+
+    const sectionCenter = rect.top + rect.height / 2;
+    const viewportCenter = viewportHeight / 2;
+    const offset = sectionCenter - viewportCenter;
+    const progress = Math.max(-1, Math.min(1, offset / viewportHeight));
+    const moveY = progress * 10;
+
+    closingSection.style.setProperty("--closing-parallax-y", `${moveY.toFixed(2)}px`);
+    ticking = false;
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(updateParallax);
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
 }
