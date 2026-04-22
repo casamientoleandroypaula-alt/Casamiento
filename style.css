@@ -928,7 +928,7 @@ main,
   position: relative;
   background-image: url("img/final.jpg");
   background-size: cover;
-  background-position: center 52%;
+  background-position: center 48%;
   padding: clamp(100px, 18vh, 160px) 20px;
   text-align: center;
   color: white;
@@ -938,6 +938,14 @@ main,
   overflow: hidden;
   min-height: clamp(420px, 74vh, 720px);
   isolation: isolate;
+}
+
+@media (min-width: 769px) {
+  .closing {
+    width: min(1200px, calc(100% - 40px));
+    margin: 0 auto;
+    border-radius: 24px;
+  }
 }
 
 .closing::before {
@@ -1243,9 +1251,9 @@ main,
   }
 
   .closing {
-    padding: clamp(90px, 16vh, 120px) 18px;
+    padding: 80px 16px;
     min-height: 62vh;
-    background-position: center 50%;
+    background-position: center 42%;
   }
 
   .closing-content {
@@ -1259,6 +1267,13 @@ main,
   .music-toggle {
     bottom: 84px;
     right: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .closing {
+    background-position: center 42%;
+    padding: 80px 16px;
   }
 }
 
