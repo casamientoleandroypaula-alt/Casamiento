@@ -551,6 +551,19 @@ main,
   padding-top: 12px;
 }
 
+.dresscode-image {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+.dresscode-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 28px;
+}
+
 .dresscode-colors {
   display: flex;
   justify-content: center;
