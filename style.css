@@ -930,7 +930,7 @@ main,
   position: relative;
   background-image: url("img/final1.jpg");
   background-size: cover;
-  background-position: 50% calc(46% + var(--closing-parallax-y, 0px));
+  background-position: center 60%;
   padding: clamp(100px, 18vh, 160px) 20px;
   text-align: center;
   color: white;
