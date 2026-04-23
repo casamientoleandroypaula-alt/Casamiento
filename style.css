@@ -858,18 +858,97 @@ main,
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.34);
 }
 
-.monto {
-  font-weight: 600;
-  font-size: 1.05em;
+#regalo .card,
+#confirmar .card {
+  position: relative;
+  border-radius: clamp(22px, 3vw, 30px);
+  padding: clamp(34px, 4.5vw, 52px) clamp(22px, 4.5vw, 44px);
+  background:
+    radial-gradient(120% 82% at 10% 0%, rgba(255, 255, 255, 0.7), transparent 58%),
+    radial-gradient(84% 70% at 95% 10%, rgba(214, 190, 163, 0.22), transparent 60%),
+    linear-gradient(155deg, #fbf6ef 0%, #f4e8d8 100%);
+  border: 1px solid rgba(161, 128, 96, 0.22);
+  box-shadow:
+    0 22px 44px rgba(72, 51, 36, 0.13),
+    0 1px 0 rgba(255, 255, 255, 0.64) inset;
+  overflow: hidden;
+}
+
+#regalo .card::before,
+#confirmar .card::before,
+#regalo .card::after,
+#confirmar .card::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#regalo .card::before,
+#confirmar .card::before {
+  top: -108px;
+  left: -76px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.46) 0%, rgba(255, 255, 255, 0) 72%);
+}
+
+#regalo .card::after,
+#confirmar .card::after {
+  right: -92px;
+  bottom: -126px;
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(circle, rgba(184, 145, 106, 0.18) 0%, rgba(184, 145, 106, 0) 74%);
+}
+
+#regalo .card > *,
+#confirmar .card > * {
+  position: relative;
+  z-index: 1;
+}
+
+#regalo .section-intro h2,
+#confirmar .section-intro h2 {
+  color: #543c2c;
+  line-height: 1.12;
   letter-spacing: 0.02em;
-  padding: 5px 12px;
+}
+
+#regalo .section-intro,
+#confirmar .section-intro {
+  margin-bottom: clamp(24px, 3vw, 34px);
+}
+
+#regalo .info-text.centered,
+#confirmar .info-text.centered {
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+#regalo .info-text + .info-text {
+  margin-top: 14px;
+}
+
+#regalo .monto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  font-size: clamp(1.14rem, 2.4vw, 1.38rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 12px 18px 11px;
   border-radius: 999px;
-  color: #5f4637;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(111, 85, 66, 0.16);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: #6b4730;
+  background: linear-gradient(180deg, rgba(255, 254, 251, 0.95), rgba(250, 243, 233, 0.9));
+  border: 1px solid rgba(160, 126, 95, 0.24);
+  box-shadow:
+    0 10px 24px rgba(96, 70, 49, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.75) inset;
 }
 
 .location-grid {
@@ -925,97 +1004,131 @@ main,
 }
 
 .gift-box {
-  margin-top: 24px;
-  border: 1px solid rgba(111, 85, 66, 0.18);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.48));
-  border-radius: 20px;
-  padding: 20px;
+  position: relative;
+  margin-top: 30px;
+  border: 1px solid rgba(158, 124, 93, 0.26);
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.95), rgba(250, 242, 232, 0.9));
+  border-radius: 18px;
+  padding: clamp(18px, 2.6vw, 24px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 16px;
   flex-wrap: wrap;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 12px 24px rgba(93, 65, 45, 0.09),
+    0 1px 0 rgba(255, 255, 255, 0.76) inset;
+}
+
+.gift-box::before {
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 14px;
+  right: 14px;
+  border-top: 1px solid rgba(171, 132, 100, 0.2);
+  pointer-events: none;
 }
 
 .gift-label {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--muted);
-  margin-bottom: 8px;
+  letter-spacing: 0.24em;
+  color: #987357;
+  margin-bottom: 9px;
 }
 
 #aliasText {
-  font-size: 1.03rem;
-  letter-spacing: 0.04em;
-  color: #4f3d31;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.34rem, 2.7vw, 1.72rem);
+  letter-spacing: 0.045em;
+  color: #523b2c;
+  line-height: 1;
 }
 
 .copy-btn {
-  border: 1px solid transparent;
-  background: linear-gradient(180deg, #95755f 0%, #82644e 100%);
+  border: 1px solid rgba(131, 100, 75, 0.35);
+  background: linear-gradient(180deg, #8f6f58 0%, #755a47 100%);
   color: var(--white);
-  padding: 12px 18px;
+  padding: 12px 22px;
   border-radius: 999px;
   cursor: pointer;
   min-height: 46px;
   font-weight: 500;
-  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 10px 22px rgba(109, 82, 64, 0.24);
+  letter-spacing: 0.03em;
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow:
+    0 12px 24px rgba(94, 69, 51, 0.24),
+    0 1px 0 rgba(255, 255, 255, 0.2) inset;
 }
 
 .copy-btn:hover {
-  background: linear-gradient(180deg, #896a55 0%, #755946 100%);
+  background: linear-gradient(180deg, #876851 0%, #6b513f 100%);
+  border-color: rgba(131, 100, 75, 0.48);
   transform: translateY(-1px);
 }
 
 .rsvp-form {
-  margin-top: 30px;
+  margin-top: 34px;
   text-align: left;
 }
 
 .rsvp-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: clamp(14px, 2.4vw, 20px);
 }
 
 .rsvp-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 
 .rsvp-field span {
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: #6f6055;
+  letter-spacing: 0.22em;
+  color: #8c6950;
 }
 
 .rsvp-field input {
   width: 100%;
-  border: 1px solid rgba(111, 85, 66, 0.24);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.75));
+  border: 1px solid rgba(146, 113, 85, 0.26);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(251, 245, 237, 0.9));
   color: var(--text);
-  border-radius: 14px;
-  padding: 13px 14px;
+  border-radius: 13px;
+  padding: 14px 15px;
   outline: none;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, transform 0.2s ease;
+  box-shadow:
+    0 6px 14px rgba(93, 65, 45, 0.07),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
 }
 
 .rsvp-field input:focus {
-  border-color: rgba(111, 85, 66, 0.58);
-  box-shadow: 0 0 0 3px rgba(141, 110, 87, 0.14);
+  border-color: rgba(131, 100, 75, 0.6);
+  box-shadow:
+    0 0 0 3px rgba(141, 110, 87, 0.16),
+    0 10px 20px rgba(93, 65, 45, 0.12);
   background: #fff;
+  transform: translateY(-1px);
 }
 
 .rsvp-submit {
-  margin-top: 20px;
+  margin-top: 24px;
   width: 100%;
+  border-radius: 999px;
+  letter-spacing: 0.03em;
+  box-shadow: 0 12px 26px rgba(94, 69, 51, 0.22);
   transition: all 0.25s ease;
+}
+
+.rsvp-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(94, 69, 51, 0.26);
 }
 
 .rsvp-submit:disabled {
@@ -1029,13 +1142,14 @@ main,
 
 .rsvp-status {
   min-height: 22px;
-  margin: 15px 2px 0;
-  font-size: 0.93rem;
-  color: var(--muted);
+  margin: 16px 2px 0;
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
+  color: #6f5b4c;
 }
 
 .rsvp-status.is-success {
-  color: #3f6f4a;
+  color: #3d6c49;
   animation: rsvpFadeIn 0.4s ease;
 }
 
@@ -1044,7 +1158,7 @@ main,
 }
 
 .rsvp-status.is-loading {
-  color: var(--accent-dark);
+  color: #7b5f49;
 }
 
 @keyframes rsvpFadeIn {
@@ -1349,6 +1463,12 @@ main,
 
   .gift-box {
     align-items: flex-start;
+  }
+
+  #regalo .monto {
+    display: block;
+    margin: 12px auto 0;
+    width: fit-content;
   }
 
   .copy-btn {
