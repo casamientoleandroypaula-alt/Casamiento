@@ -928,7 +928,7 @@ main,
 
 .closing {
   position: relative;
-  background-image: url("img/final.jpg");
+  background-image: url("img/final1.jpg");
   background-size: cover;
   background-position: 50% calc(46% + var(--closing-parallax-y, 0px));
   padding: clamp(100px, 18vh, 160px) 20px;
