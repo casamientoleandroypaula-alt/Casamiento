@@ -526,8 +526,9 @@ main,
 
 #lugar::before {
   background:
-    linear-gradient(180deg, rgba(18, 12, 8, 0.54), rgba(28, 18, 12, 0.44)),
-    radial-gradient(circle at 70% 20%, rgba(245, 224, 201, 0.17), transparent 44%);
+    linear-gradient(170deg, rgba(20, 12, 8, 0.46) 0%, rgba(36, 22, 14, 0.36) 58%, rgba(16, 10, 7, 0.42) 100%),
+    radial-gradient(circle at 78% 12%, rgba(255, 226, 192, 0.24), rgba(255, 226, 192, 0) 42%),
+    radial-gradient(circle at 18% 82%, rgba(216, 171, 129, 0.14), rgba(216, 171, 129, 0) 50%);
 }
 
 #lugar::after {
@@ -959,32 +960,75 @@ main,
 }
 
 .location-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.14);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  padding: 28px 32px;
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.48);
+  position: relative;
+  background:
+    linear-gradient(162deg, rgba(255, 250, 245, 0.31) 0%, rgba(240, 220, 199, 0.18) 100%);
+  border: 1px solid rgba(255, 244, 230, 0.28);
+  box-shadow:
+    0 22px 44px rgba(12, 8, 5, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.44) inset;
+  backdrop-filter: blur(7px) saturate(1.05);
+  -webkit-backdrop-filter: blur(7px) saturate(1.05);
+  padding: clamp(30px, 4vw, 40px) clamp(24px, 4vw, 40px);
+  color: #fff7ef;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.36);
+}
+
+.location-card::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: calc(var(--radius) - 10px);
+  border: 1px solid rgba(255, 239, 224, 0.2);
+  pointer-events: none;
+}
+
+.location-card::after {
+  content: "";
+  position: absolute;
+  top: -78px;
+  right: -58px;
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 223, 189, 0.2) 0%, rgba(255, 223, 189, 0) 70%);
+  pointer-events: none;
 }
 
 .location-card .info-text {
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.48);
+  color: rgba(255, 248, 241, 0.96);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.012em;
+}
+
+.location-card h3 {
+  color: #fff9f2;
+  letter-spacing: 0.03em;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.32);
+}
+
+#lugar .info-label {
+  color: rgba(255, 234, 211, 0.92);
+  letter-spacing: 0.27em;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.28);
 }
 
 .location-cta {
-  margin-top: 16px;
+  margin-top: 20px;
   min-width: 180px;
-  min-height: 46px;
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.76);
+  min-height: 48px;
+  border-color: rgba(255, 235, 214, 0.56);
+  color: #4f3729;
+  background: linear-gradient(180deg, rgba(255, 249, 243, 0.93), rgba(245, 230, 214, 0.88));
+  box-shadow:
+    0 10px 20px rgba(22, 14, 9, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
 }
 
 .location-cta:hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.92);
+  background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(250, 238, 224, 0.92));
+  border-color: rgba(255, 242, 227, 0.7);
 }
 
 .location-cta:focus-visible,
@@ -1213,8 +1257,8 @@ main,
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, rgba(0, 0, 0, 0) 64%, rgba(0, 0, 0, 0.24) 100%),
-    radial-gradient(circle at 50% 20%, rgba(255, 198, 124, 0.16), rgba(255, 198, 124, 0));
+    radial-gradient(circle at center, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.28) 100%),
+    radial-gradient(circle at 48% 18%, rgba(255, 210, 156, 0.2), rgba(255, 210, 156, 0));
   z-index: 0;
   pointer-events: none;
 }
@@ -1236,19 +1280,34 @@ main,
   position: relative;
   z-index: 1;
   max-width: 700px;
-  padding: 0 10px;
+  padding: 0 12px;
+}
+
+.closing-content::before {
+  content: "";
+  display: block;
+  width: clamp(82px, 14vw, 126px);
+  height: 1px;
+  margin: 0 auto clamp(18px, 2.6vh, 24px);
+  background: linear-gradient(90deg, rgba(248, 225, 196, 0), rgba(248, 225, 196, 0.86), rgba(248, 225, 196, 0));
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.26));
 }
 
 .closing-line {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  line-height: 1.4;
-  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+  font-size: clamp(2.15rem, 4.8vw, 3.34rem);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: 0.018em;
+  color: rgba(255, 249, 242, 0.98);
+  text-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.42),
+    0 0 18px rgba(175, 127, 82, 0.16);
 }
 
 .closing-line + .closing-line {
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .music-toggle {
@@ -1390,6 +1449,17 @@ main,
   .location-card {
     padding: 24px 22px;
   }
+
+  .location-card::before {
+    inset: 8px;
+  }
+
+  .location-card::after {
+    width: 180px;
+    height: 180px;
+    top: -72px;
+    right: -48px;
+  }
 }
 
 @media (max-width: 520px) {
@@ -1486,7 +1556,9 @@ main,
   }
 
   .closing-line {
-    line-height: 1.35;
+    font-size: clamp(2.02rem, 9.4vw, 2.55rem);
+    line-height: 1.2;
+    letter-spacing: 0.014em;
   }
 
   .music-toggle {
