@@ -552,16 +552,16 @@ main,
 }
 
 .dresscode-image {
-  padding: 0;
+  padding: 0 !important;
   overflow: hidden;
   border-radius: 28px;
 }
 
 .dresscode-image img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
-  border-radius: 28px;
 }
 
 .dresscode-colors {
