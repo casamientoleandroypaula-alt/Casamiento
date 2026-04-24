@@ -22,7 +22,7 @@ const giftAccordionTrigger = document.getElementById("giftAccordionTrigger");
 const giftAccordionPanel = document.getElementById("giftAccordionPanel");
 const toast = document.getElementById("toast");
 const musicToggle = document.getElementById("musicToggle");
-const bgMusic = document.getElementById("bgMusic");
+const music = document.getElementById("bgMusic");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const countdownDays = document.getElementById("days");
 const countdownHours = document.getElementById("hours");
@@ -164,7 +164,32 @@ function runHeroSequence() {
 }
 
 function setupMusicControls() {
-  if (!musicToggle || !bgMusic) return;
+  if (!musicToggle || !music) return;
+
+  music.volume = 0.3;
+
+  const fadeIn = (audio) => {
+    audio.volume = 0;
+    const playPromise = audio.play();
+
+    if (playPromise && typeof playPromise.then === "function") {
+      playPromise.catch(() => {
+        setMusicState(false);
+      });
+    }
+
+    let vol = 0;
+    const interval = window.setInterval(() => {
+      if (vol < 0.3) {
+        vol += 0.02;
+        audio.volume = Math.min(vol, 0.3);
+      } else {
+        window.clearInterval(interval);
+      }
+    }, 100);
+  };
+
+  let hasInteracted = false;
 
   const setMusicState = (playing) => {
     musicToggle.classList.toggle("is-playing", playing);
@@ -174,10 +199,23 @@ function setupMusicControls() {
     musicToggle.querySelector(".music-icon").textContent = playing ? "❚❚" : "♪";
   };
 
-  musicToggle.addEventListener("click", async () => {
-    if (bgMusic.paused) {
+  const startMusicOnce = () => {
+    if (!hasInteracted) {
+      hasInteracted = true;
+      fadeIn(music);
+    }
+  };
+
+  document.addEventListener("click", startMusicOnce, { once: true });
+  document.addEventListener("touchstart", startMusicOnce, { once: true });
+
+  musicToggle.addEventListener("click", async (event) => {
+    event.stopPropagation();
+    hasInteracted = true;
+
+    if (music.paused) {
       try {
-        await bgMusic.play();
+        await music.play();
         setMusicState(true);
       } catch (error) {
         showToast("Tocá nuevamente para activar el audio");
@@ -186,12 +224,12 @@ function setupMusicControls() {
       return;
     }
 
-    bgMusic.pause();
+    music.pause();
     setMusicState(false);
   });
 
-  bgMusic.addEventListener("pause", () => setMusicState(false));
-  bgMusic.addEventListener("play", () => setMusicState(true));
+  music.addEventListener("pause", () => setMusicState(false));
+  music.addEventListener("play", () => setMusicState(true));
 }
 
 function warmupRsvpScript() {
