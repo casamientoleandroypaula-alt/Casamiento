@@ -242,11 +242,11 @@ main,
 }
 
 .hero-col-1 {
-  animation: scrollUp 26s linear infinite;
+  animation: scrollUp 23.5s linear infinite;
 }
 
 .hero-col-2 {
-  animation: scrollDown 26s linear infinite;
+  animation: scrollDown 23.5s linear infinite;
 }
 
 @keyframes scrollUp {
