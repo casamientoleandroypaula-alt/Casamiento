@@ -242,6 +242,20 @@ main,
   filter: grayscale(0.05) brightness(1.08);
 }
 
+@media (min-width: 861px) {
+  .hero-bg {
+    gap: 14px;
+    padding: 0 14px;
+  }
+
+  .hero-col img {
+    height: 44vh;
+    object-fit: cover;
+    object-position: center 24%;
+    border-radius: 18px;
+  }
+}
+
 .hero-col-1 {
   animation: scrollUp 23.5s linear infinite;
 }
