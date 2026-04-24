@@ -968,6 +968,38 @@ main,
   margin-top: 14px;
 }
 
+.regalo-texto {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: #5f4637;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.regalo-sub {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  color: #7a6252;
+  text-align: center;
+}
+
+.monto-animado {
+  display: inline-block;
+  animation: montoFade 2.5s ease infinite alternate;
+}
+
+@keyframes montoFade {
+  0% {
+    opacity: 0.7;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
 #regalo .monto {
   display: inline-flex;
   align-items: center;
@@ -1125,25 +1157,31 @@ main,
 }
 
 .copy-btn {
-  border: 1px solid rgba(131, 100, 75, 0.35);
-  background: linear-gradient(180deg, #8f6f58 0%, #755a47 100%);
-  color: var(--white);
-  padding: 12px 22px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.08)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  color: #5f4637;
   border-radius: 999px;
+  padding: 10px 18px;
+  font-family: "Cormorant Garamond", serif;
   cursor: pointer;
   min-height: 46px;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: all 0.25s ease;
   box-shadow:
-    0 12px 24px rgba(94, 69, 51, 0.24),
-    0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
 .copy-btn:hover {
-  background: linear-gradient(180deg, #876851 0%, #6b513f 100%);
-  border-color: rgba(131, 100, 75, 0.48);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
 .rsvp-form {
