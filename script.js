@@ -17,6 +17,9 @@ const heroSequenceGroups = {
 const pageLoader = document.getElementById("pageLoader");
 const copyAliasBtn = document.getElementById("copyAliasBtn");
 const aliasText = document.getElementById("aliasText");
+const giftAccordion = document.getElementById("giftAccordion");
+const giftAccordionTrigger = document.getElementById("giftAccordionTrigger");
+const giftAccordionPanel = document.getElementById("giftAccordionPanel");
 const toast = document.getElementById("toast");
 const musicToggle = document.getElementById("musicToggle");
 const bgMusic = document.getElementById("bgMusic");
@@ -80,6 +83,7 @@ setupOpeningExperience();
 setupRsvpForm();
 warmupRsvpScript();
 setupCountdown();
+setupGiftAccordion();
 
 if (copyAliasBtn && aliasText) {
   copyAliasBtn.addEventListener("click", async () => {
@@ -90,6 +94,25 @@ if (copyAliasBtn && aliasText) {
       showToast("No se pudo copiar");
     }
   });
+}
+
+function setupGiftAccordion() {
+  if (!giftAccordion || !giftAccordionTrigger || !giftAccordionPanel) return;
+
+  const syncPanelHeight = () => {
+    if (!giftAccordion.classList.contains("is-open")) return;
+    giftAccordionPanel.style.maxHeight = `${giftAccordionPanel.scrollHeight}px`;
+  };
+
+  const toggleAccordion = () => {
+    const isOpen = giftAccordion.classList.toggle("is-open");
+    giftAccordionTrigger.setAttribute("aria-expanded", String(isOpen));
+    giftAccordionPanel.setAttribute("aria-hidden", String(!isOpen));
+    giftAccordionPanel.style.maxHeight = isOpen ? `${giftAccordionPanel.scrollHeight}px` : "0px";
+  };
+
+  giftAccordionTrigger.addEventListener("click", toggleAccordion);
+  window.addEventListener("resize", syncPanelHeight);
 }
 
 function setupOpeningExperience() {

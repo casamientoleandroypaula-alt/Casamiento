@@ -256,11 +256,35 @@
         </p>
 
         <div class="gift-box">
-          <div>
+          <div class="gift-main">
             <span class="gift-label">Alias</span>
             <strong id="aliasText">boda.pauylean</strong>
           </div>
           <button class="copy-btn" id="copyAliasBtn" type="button">Copiar alias</button>
+
+          <div class="gift-accordion" id="giftAccordion">
+            <button
+              class="gift-accordion-trigger"
+              id="giftAccordionTrigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="giftAccordionPanel"
+            >
+              <span>Datos de la cuenta</span>
+              <span class="gift-accordion-icon" aria-hidden="true">⌄</span>
+            </button>
+
+            <div class="gift-accordion-panel" id="giftAccordionPanel" aria-hidden="true">
+              <div class="gift-accordion-content">
+                <p>Banco Santander</p>
+                <p>Tipo de cuenta: Caja de ahorro en pesos</p>
+                <p>Número de cuenta: 218-375988/6</p>
+                <p>CBU: 0720218888000037598868</p>
+                <p>Titular: PAULA FERNANDA ALBELO MANUEL</p>
+                <p>CUIT: 27-42506707-4</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
