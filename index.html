@@ -274,7 +274,7 @@
       <div class="card centered-card">
         <p class="info-text centered">Te pedimos confirmar asistencia antes del 31 de diciembre</p>
 
-        <form class="rsvp-form" id="rsvp-form" action="https://script.google.com/macros/s/AKfycbwhX_lzT9TV4dQTiTpfBFK2uPCy5W1wxSxjiA_yeGhzWPn9j33Sf9kOgdWK8e5YaJza/exec" method="POST" target="hidden_iframe" novalidate>
+        <form class="rsvp-form" id="rsvp-form" action="https://script.google.com/macros/s/AKfycbyVPXkS4-WScu4tME3J6X3b0VanZ7BsW462ZV_Anwgd80h5uReyN4m-htZJNhzLg--ijA/exec" method="POST" target="hidden_iframe" novalidate>
           <div class="rsvp-grid">
             <label class="rsvp-field" for="rsvpNombre">
               <span>Nombre y apellido *</span>
@@ -286,15 +286,47 @@
               <input id="rsvpDni" name="dni" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" required />
             </label>
 
-            <label class="rsvp-field" for="rsvpRestriccion">
-              <span>Restricción alimentaria</span>
-              <input id="rsvpRestriccion" name="restriccion" type="text" autocomplete="off" />
-            </label>
+            <fieldset class="rsvp-field rsvp-choice-group">
+              <legend>Tipo de invitado *</legend>
+              <div class="rsvp-pill-options">
+                <label class="rsvp-pill">
+                  <input type="radio" name="tipoInvitado" value="adulto" />
+                  <span>Adulto</span>
+                </label>
+                <label class="rsvp-pill">
+                  <input type="radio" name="tipoInvitado" value="menor" />
+                  <span>Menor</span>
+                </label>
+              </div>
+            </fieldset>
 
-            <label class="rsvp-field" for="rsvpNinos">
-              <span>Niños</span>
-              <input id="rsvpNinos" name="ninos" type="number" min="0" step="1" inputmode="numeric" />
-            </label>
+            <div class="rsvp-transition-field is-hidden" id="edadField" aria-hidden="true">
+              <label class="rsvp-field" for="rsvpEdad">
+                <span>Edad *</span>
+                <input id="rsvpEdad" name="edad" type="number" min="1" step="1" inputmode="numeric" />
+              </label>
+            </div>
+
+            <fieldset class="rsvp-field rsvp-choice-group">
+              <legend>¿Tiene restricción alimentaria? *</legend>
+              <div class="rsvp-pill-options">
+                <label class="rsvp-pill">
+                  <input type="radio" name="restriccionOpcion" value="no" />
+                  <span>No</span>
+                </label>
+                <label class="rsvp-pill">
+                  <input type="radio" name="restriccionOpcion" value="si" />
+                  <span>Sí</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="rsvp-transition-field is-hidden" id="restriccionDetalleField" aria-hidden="true">
+              <label class="rsvp-field" for="rsvpRestriccionDetalle">
+                <span>¿Cuál? *</span>
+                <input id="rsvpRestriccionDetalle" name="restriccionDetalle" type="text" autocomplete="off" />
+              </label>
+            </div>
           </div>
 
           <button class="btn btn-primary rsvp-submit" id="rsvpSubmitBtn" type="submit">Enviar confirmación</button>

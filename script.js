@@ -1,7 +1,7 @@
 document.documentElement.classList.add("js");
 
-const RSVP_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwhX_lzT9TV4dQTiTpfBFK2uPCy5W1wxSxjiA_yeGhzWPn9j33Sf9kOgdWK8e5YaJza/exec";
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyVPXkS4-WScu4tME3J6X3b0VanZ7BsW462ZV_Anwgd80h5uReyN4m-htZJNhzLg--ijA/exec";
 
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
@@ -29,6 +29,10 @@ const countdownSeconds = document.getElementById("seconds");
 const rsvpForm = document.getElementById("rsvp-form");
 const rsvpSubmitBtn = document.getElementById("rsvpSubmitBtn");
 const rsvpStatus = document.getElementById("rsvpStatus");
+const rsvpEdadField = document.getElementById("edadField");
+const rsvpEdadInput = document.getElementById("rsvpEdad");
+const rsvpRestriccionDetalleField = document.getElementById("restriccionDetalleField");
+const rsvpRestriccionDetalleInput = document.getElementById("rsvpRestriccionDetalle");
 
 const pageStartTime = performance.now();
 
@@ -169,11 +173,11 @@ function setupMusicControls() {
 
 function warmupRsvpScript() {
   const warmupImage = new Image();
-  const separator = RSVP_SCRIPT_URL.includes("?") ? "&" : "?";
+  const separator = SCRIPT_URL.includes("?") ? "&" : "?";
 
   warmupImage.onload = () => {};
   warmupImage.onerror = () => {};
-  warmupImage.src = `${RSVP_SCRIPT_URL}${separator}warmup=1&t=${Date.now()}`;
+  warmupImage.src = `${SCRIPT_URL}${separator}warmup=1&t=${Date.now()}`;
 }
 
 function setupRsvpForm() {
@@ -182,6 +186,36 @@ function setupRsvpForm() {
   let successButtonTimer = null;
   let duplicateCheckInProgress = false;
   let isSubmittingLocked = false;
+
+  const setTransitionFieldVisibility = (wrapper, shouldShow, input) => {
+    if (!wrapper) return;
+    wrapper.classList.toggle("is-hidden", !shouldShow);
+    wrapper.setAttribute("aria-hidden", String(!shouldShow));
+    if (!shouldShow && input) input.value = "";
+  };
+
+  const syncConditionalRsvpFields = () => {
+    const selectedTipoInvitado = rsvpForm.querySelector('input[name="tipoInvitado"]:checked')?.value || "";
+    const selectedRestriccion = rsvpForm.querySelector('input[name="restriccionOpcion"]:checked')?.value || "";
+
+    setTransitionFieldVisibility(rsvpEdadField, selectedTipoInvitado === "menor", rsvpEdadInput);
+    setTransitionFieldVisibility(
+      rsvpRestriccionDetalleField,
+      selectedRestriccion === "si",
+      rsvpRestriccionDetalleInput
+    );
+  };
+
+  rsvpForm.addEventListener("change", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement)) return;
+
+    if (target.name === "tipoInvitado" || target.name === "restriccionOpcion") {
+      syncConditionalRsvpFields();
+    }
+  });
+
+  syncConditionalRsvpFields();
 
   rsvpForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -197,7 +231,10 @@ function setupRsvpForm() {
     const formData = new FormData(rsvpForm);
     const rawNombre = String(formData.get("nombre") || "").trim();
     const rawDni = String(formData.get("dni") || "").trim();
-    const rawNinos = String(formData.get("ninos") || "").trim();
+    const tipoInvitado = String(formData.get("tipoInvitado") || "").trim();
+    const rawEdad = String(formData.get("edad") || "").trim();
+    const restriccionOpcion = String(formData.get("restriccionOpcion") || "").trim();
+    const restriccionDetalle = String(formData.get("restriccionDetalle") || "").trim();
 
     if (!rawNombre) {
       setRsvpStatus("error", "Completá tu nombre y apellido.");
@@ -211,20 +248,38 @@ function setupRsvpForm() {
       return;
     }
 
-    if (rawNinos) {
-      if (!/^\d+$/.test(rawNinos)) {
-        setRsvpStatus("error", "Si completás niños, debe ser un número entero.");
+    if (tipoInvitado !== "adulto" && tipoInvitado !== "menor") {
+      setRsvpStatus("error", "Seleccioná el tipo de invitado.");
+      isSubmittingLocked = false;
+      return;
+    }
+
+    if (tipoInvitado === "menor") {
+      if (!/^\d+$/.test(rawEdad)) {
+        setRsvpStatus("error", "Si el invitado es menor, la edad es obligatoria y debe ser un número entero.");
         isSubmittingLocked = false;
         return;
       }
 
-      const parsedNinos = Number.parseInt(rawNinos, 10);
+      const parsedEdad = Number.parseInt(rawEdad, 10);
 
-      if (!Number.isInteger(parsedNinos) || parsedNinos < 0) {
-        setRsvpStatus("error", "Si completás niños, debe ser un entero mayor o igual a 0.");
+      if (!Number.isInteger(parsedEdad) || parsedEdad <= 0) {
+        setRsvpStatus("error", "Si el invitado es menor, la edad debe ser un entero mayor a 0.");
         isSubmittingLocked = false;
         return;
       }
+    }
+
+    if (restriccionOpcion !== "no" && restriccionOpcion !== "si") {
+      setRsvpStatus("error", "Indicá si tiene restricción alimentaria.");
+      isSubmittingLocked = false;
+      return;
+    }
+
+    if (restriccionOpcion === "si" && !restriccionDetalle) {
+      setRsvpStatus("error", "Completá el detalle de la restricción alimentaria.");
+      isSubmittingLocked = false;
+      return;
     }
 
     clearTimeout(successButtonTimer);
@@ -278,6 +333,7 @@ function setupRsvpForm() {
       // damos éxito visual estable.
       window.setTimeout(() => {
         rsvpForm.reset();
+        syncConditionalRsvpFields();
         setRsvpStatus("success", "¡Gracias por confirmar! Nos hace muy felices que nos acompañes ❤️");
         rsvpStatus.classList.remove("is-success");
         void rsvpStatus.offsetWidth;
@@ -325,7 +381,7 @@ function checkDniExists(dni, callback) {
   };
 
   const url =
-    `${RSVP_SCRIPT_URL}?mode=checkDni` +
+    `${SCRIPT_URL}?mode=checkDni` +
     `&dni=${encodeURIComponent(dni)}` +
     `&callback=${encodeURIComponent(callbackName)}`;
 

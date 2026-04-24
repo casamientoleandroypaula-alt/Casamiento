@@ -1266,13 +1266,80 @@ main,
   display: flex;
   flex-direction: column;
   gap: 9px;
+  min-width: 0;
 }
 
-.rsvp-field span {
+.rsvp-field span,
+.rsvp-choice-group legend {
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.22em;
   color: #8c6950;
+}
+
+.rsvp-choice-group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.rsvp-pill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.rsvp-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rsvp-pill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rsvp-pill span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(146, 113, 85, 0.33);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 237, 226, 0.92));
+  color: #6b4f3d;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.24s ease;
+  box-shadow: 0 6px 14px rgba(93, 65, 45, 0.08);
+}
+
+.rsvp-pill span:hover {
+  transform: translateY(-1px);
+  border-color: rgba(94, 131, 101, 0.4);
+  box-shadow: 0 9px 18px rgba(62, 94, 70, 0.15);
+}
+
+.rsvp-pill input:checked + span {
+  border-color: rgba(73, 118, 82, 0.72);
+  background: linear-gradient(180deg, rgba(90, 131, 97, 0.2), rgba(66, 104, 73, 0.32));
+  color: #2f5137;
+  box-shadow:
+    0 10px 20px rgba(46, 82, 55, 0.22),
+    0 0 0 2px rgba(80, 120, 87, 0.18);
+}
+
+.rsvp-pill input:focus-visible + span {
+  box-shadow:
+    0 0 0 3px rgba(80, 120, 87, 0.28),
+    0 8px 16px rgba(46, 82, 55, 0.18);
 }
 
 .rsvp-field input {
@@ -1296,6 +1363,22 @@ main,
     0 10px 20px rgba(93, 65, 45, 0.12);
   background: #fff;
   transform: translateY(-1px);
+}
+
+.rsvp-transition-field {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 180px;
+  transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease, margin 0.3s ease;
+}
+
+.rsvp-transition-field.is-hidden {
+  opacity: 0;
+  transform: translateY(-8px);
+  max-height: 0;
+  overflow: hidden;
+  margin: 0;
+  pointer-events: none;
 }
 
 .rsvp-submit {
@@ -1561,6 +1644,18 @@ main,
   .location-grid,
   .rsvp-grid {
     grid-template-columns: 1fr;
+  }
+
+  .rsvp-pill-options {
+    gap: 8px;
+  }
+
+  .rsvp-pill {
+    flex: 1 1 calc(50% - 4px);
+  }
+
+  .rsvp-pill span {
+    width: 100%;
   }
 
   .hero {
