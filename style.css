@@ -256,17 +256,25 @@ main,
 
   .hero-col img {
     width: 100%;
-    height: 50vh;
+    height: 42vh;
     object-fit: cover;
-    object-position: center 28%;
+    object-position: center 24%;
     background: transparent;
     border-radius: 0;
+  }
+
+  .hero-col-1 {
+    animation: scrollUp 34s linear infinite;
+  }
+
+  .hero-col-2 {
+    animation: scrollDown 34s linear infinite;
   }
 
   .hero-col-3 {
     display: flex;
     flex-direction: column;
-    animation: scrollUp 23.5s linear infinite;
+    animation: scrollUp 34s linear infinite;
   }
 }
 
