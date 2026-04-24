@@ -168,26 +168,26 @@ function setupMusicControls() {
 
   music.volume = 0.3;
 
-  const fadeIn = (audio) => {
-    audio.volume = 0;
-    const playPromise = audio.play();
+  async function fadeIn(audio) {
+    try {
+      audio.volume = 0;
+      await audio.play();
 
-    if (playPromise && typeof playPromise.then === "function") {
-      playPromise.catch(() => {
-        setMusicState(false);
-      });
+      let vol = 0;
+      const interval = window.setInterval(() => {
+        if (vol < 0.3) {
+          vol += 0.02;
+          audio.volume = Math.min(vol, 0.3);
+        } else {
+          window.clearInterval(interval);
+        }
+      }, 100);
+
+      setMusicState(true);
+    } catch (error) {
+      setMusicState(false);
     }
-
-    let vol = 0;
-    const interval = window.setInterval(() => {
-      if (vol < 0.3) {
-        vol += 0.02;
-        audio.volume = Math.min(vol, 0.3);
-      } else {
-        window.clearInterval(interval);
-      }
-    }, 100);
-  };
+  }
 
   let hasInteracted = false;
 
