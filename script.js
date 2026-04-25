@@ -167,10 +167,20 @@ function setupMusicControls() {
   if (!musicToggle || !music) return;
 
   music.volume = 0.3;
+  music.load();
+
+  const setMusicState = (playing) => {
+    musicToggle.classList.toggle("is-playing", playing);
+    musicToggle.setAttribute("aria-pressed", String(playing));
+    musicToggle.setAttribute("aria-label", playing ? "Pausar música" : "Reproducir música");
+    musicToggle.querySelector(".music-text").textContent = playing ? "Pausar" : "Música";
+    musicToggle.querySelector(".music-icon").textContent = playing ? "❚❚" : "♪";
+  };
 
   async function fadeIn(audio) {
+    audio.volume = 0;
+
     try {
-      audio.volume = 0;
       await audio.play();
 
       let vol = 0;
@@ -186,28 +196,31 @@ function setupMusicControls() {
       setMusicState(true);
     } catch (error) {
       setMusicState(false);
+      throw error;
     }
   }
 
   let hasInteracted = false;
 
-  const setMusicState = (playing) => {
-    musicToggle.classList.toggle("is-playing", playing);
-    musicToggle.setAttribute("aria-pressed", String(playing));
-    musicToggle.setAttribute("aria-label", playing ? "Pausar música" : "Reproducir música");
-    musicToggle.querySelector(".music-text").textContent = playing ? "Pausar" : "Música";
-    musicToggle.querySelector(".music-icon").textContent = playing ? "❚❚" : "♪";
-  };
+  const startMusicOnce = async () => {
+    if (hasInteracted) return;
 
-  const startMusicOnce = () => {
-    if (!hasInteracted) {
+    try {
       hasInteracted = true;
-      fadeIn(music);
+      await fadeIn(music);
+    } catch (error) {
+      hasInteracted = false;
+      setMusicState(false);
     }
   };
 
-  document.addEventListener("click", startMusicOnce, { once: true });
-  document.addEventListener("touchstart", startMusicOnce, { once: true });
+  ["pointerdown", "touchend", "click"].forEach((eventName) => {
+    document.addEventListener(
+      eventName,
+      startMusicOnce,
+      { once: true, passive: true }
+    );
+  });
 
   musicToggle.addEventListener("click", async (event) => {
     event.stopPropagation();
@@ -215,10 +228,10 @@ function setupMusicControls() {
 
     if (music.paused) {
       try {
-        await music.play();
-        setMusicState(true);
+        await fadeIn(music);
       } catch (error) {
         showToast("Tocá nuevamente para activar el audio");
+        hasInteracted = false;
         setMusicState(false);
       }
       return;
