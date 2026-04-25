@@ -142,9 +142,10 @@ function setupOpeningExperience() {
 
 function runHeroSequence() {
   const immediate = reduceMotion.matches;
+  heroSequenceGroups.photos.forEach((el) => el.classList.add("is-visible"));
 
   if (immediate) {
-    Object.values(heroSequenceGroups).forEach((group) => {
+    [heroSequenceGroups.names, heroSequenceGroups.details].forEach((group) => {
       group.forEach((el) => el.classList.add("is-visible"));
     });
     return;
@@ -152,7 +153,6 @@ function runHeroSequence() {
 
   const steps = [
     { key: "names", delay: 120 },
-    { key: "photos", delay: 340 },
     { key: "details", delay: 560 },
   ];
 
