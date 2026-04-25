@@ -1529,8 +1529,9 @@ main,
 .closing {
   position: relative;
   background-image: url("img/final1.jpg");
-  background-size: cover;
-  background-position: center 60%;
+  background-size: 102% auto;
+  background-position: center center;
+  background-repeat: no-repeat;
   padding: clamp(100px, 18vh, 160px) 20px;
   text-align: center;
   color: white;
@@ -1547,7 +1548,7 @@ main,
 
 @media (min-width: 769px) {
   .closing {
-    background-position: 50% calc(44% + var(--closing-parallax-y, 0px));
+    background-position: center center;
   }
 }
 
@@ -1862,7 +1863,7 @@ main,
   .closing {
     padding: 80px 16px;
     min-height: 62vh;
-    background-position: 44% calc(42% + var(--closing-parallax-y, 0px));
+    background-position: 44% 42%;
   }
 
   .closing-content {
@@ -1917,7 +1918,4 @@ main,
     opacity: 1;
   }
 
-  .closing {
-    --closing-parallax-y: 0px;
-  }
 }
