@@ -1882,6 +1882,10 @@ main,
     margin: 0 auto 26px;
     min-height: 60vh;
   }
+
+  .closing-img {
+    object-position: 70% center;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
