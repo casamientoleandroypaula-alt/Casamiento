@@ -39,16 +39,6 @@ const rsvpRestriccionDetalleInput = document.getElementById("rsvpRestriccionDeta
 
 const pageStartTime = performance.now();
 
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    document.querySelectorAll(".lazy-hero").forEach((img) => {
-      if (!img.src && img.dataset.src) {
-        img.src = img.dataset.src;
-      }
-    });
-  }, 2200);
-});
-
 if (menuToggle && mainNav) {
   menuToggle.addEventListener("click", () => {
     mainNav.classList.toggle("open");
