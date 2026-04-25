@@ -1557,15 +1557,9 @@ main,
   }
 }
 
-.closing::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at center, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.28) 100%),
-    radial-gradient(circle at 48% 18%, rgba(255, 210, 156, 0.2), rgba(255, 210, 156, 0));
-  z-index: 0;
-  pointer-events: none;
+.closing::before,
+.closing::after {
+  display: none;
 }
 
 .closing-overlay {
