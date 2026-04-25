@@ -42,9 +42,11 @@ const pageStartTime = performance.now();
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     document.querySelectorAll(".lazy-hero").forEach((img) => {
-      img.src = img.dataset.src;
+      if (!img.src && img.dataset.src) {
+        img.src = img.dataset.src;
+      }
     });
-  }, 1500);
+  }, 2200);
 });
 
 if (menuToggle && mainNav) {
