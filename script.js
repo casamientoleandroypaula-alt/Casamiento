@@ -28,6 +28,7 @@ const countdownDays = document.getElementById("days");
 const countdownHours = document.getElementById("hours");
 const countdownMinutes = document.getElementById("minutes");
 const countdownSeconds = document.getElementById("seconds");
+const calendarBtn = document.getElementById("calendarBtn");
 
 const rsvpForm = document.getElementById("rsvp-form");
 const rsvpSubmitBtn = document.getElementById("rsvpSubmitBtn");
@@ -84,6 +85,7 @@ setupRsvpForm();
 warmupRsvpScript();
 setupCountdown();
 setupGiftAccordion();
+setupCalendarDownload();
 
 if (copyAliasBtn && aliasText) {
   copyAliasBtn.addEventListener("click", async () => {
@@ -545,7 +547,7 @@ function setupHeroParallax() {
 function setupCountdown() {
   if (!countdownDays || !countdownHours || !countdownMinutes || !countdownSeconds) return;
 
-  const eventDate = new Date("2027-03-27T19:00:00");
+  const eventDate = new Date("2027-03-27T17:00:00");
   const countdownValues = [
     countdownDays,
     countdownHours,
@@ -600,6 +602,44 @@ function setupCountdown() {
 
   updateCountdown();
   window.setInterval(updateCountdown, 1000);
+}
+
+function setupCalendarDownload() {
+  if (!calendarBtn) return;
+
+  calendarBtn.addEventListener("click", () => {
+    const icsContent = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Leandro y Paula//Invitacion//ES",
+      "BEGIN:VEVENT",
+      "UID:casamiento-leandro-paula-20270327@example.com",
+      "DTSTAMP:20270327T200000Z",
+      "DTSTART:20270327T200000Z",
+      "DTEND:20270328T060000Z",
+      "SUMMARY:Casamiento Leandro & Paula",
+      "LOCATION:Estancia Ludmila, Callejón Villanueva 1023, Luján de Cuyo",
+      "DESCRIPTION:Te esperamos para celebrar juntos este momento tan especial.",
+      "BEGIN:VALARM",
+      "TRIGGER:-P3D",
+      "ACTION:DISPLAY",
+      "DESCRIPTION:Recordatorio: Casamiento Leandro & Paula",
+      "END:VALARM",
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\r\n");
+
+    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "casamiento-leandro-paula.ics";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  });
 }
 
 function setupClosingParallax() {
