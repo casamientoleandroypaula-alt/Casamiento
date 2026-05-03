@@ -1,7 +1,7 @@
 document.documentElement.classList.add("js");
 
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyVPXkS4-WScu4tME3J6X3b0VanZ7BsW462ZV_Anwgd80h5uReyN4m-htZJNhzLg--ijA/exec";
+  "https://script.google.com/macros/s/AKfycbznQBRuPBB-YpvEkfc8bP66gTU4-xqrHFM-_ycm2vsjuJeaXUk2xzqsnhyBGVEmhn5bpA/exec";
 
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
@@ -261,8 +261,6 @@ function warmupRsvpScript() {
 function setupRsvpForm() {
   if (!rsvpForm || !rsvpSubmitBtn || !rsvpStatus) return;
 
-  let successButtonTimer = null;
-  let duplicateCheckInProgress = false;
   let isSubmittingLocked = false;
 
   const setTransitionFieldVisibility = (wrapper, shouldShow, input) => {
@@ -300,11 +298,6 @@ function setupRsvpForm() {
 
     if (isSubmittingLocked) return;
     isSubmittingLocked = true;
-
-    if (duplicateCheckInProgress) {
-      isSubmittingLocked = false;
-      return;
-    }
 
     const formData = new FormData(rsvpForm);
     const rawNombre = String(formData.get("nombre") || "").trim();
@@ -360,115 +353,121 @@ function setupRsvpForm() {
       return;
     }
 
-    clearTimeout(successButtonTimer);
     setRsvpSubmittingState(true, "Enviando...");
-    setRsvpStatus("loading", "Verificando DNI...");
+    setRsvpStatus("loading", "Enviando confirmación...");
 
-    duplicateCheckInProgress = true;
-
-    checkDniExists(rawDni, (result) => {
-      duplicateCheckInProgress = false;
-
-      if (!result || result.ok !== true) {
-        setRsvpStatus("error", "Ocurrió un error. Intentá nuevamente.");
-        setRsvpSubmittingState(false);
-        isSubmittingLocked = false;
-        return;
-      }
-
-      if (result.exists) {
-        setRsvpStatus("error", "Este DNI ya fue registrado.");
-        setRsvpSubmittingState(false);
-        isSubmittingLocked = false;
-        return;
-      }
-
-      setRsvpStatus("loading", "Enviando confirmación...");
-
-      // Envío real al Apps Script con iframe oculto, sin cambiar el layout
-      const iframeName = "rsvp_submit_iframe";
-      let submitFrame = document.querySelector(`iframe[name="${iframeName}"]`);
-
-      if (!submitFrame) {
-        submitFrame = document.createElement("iframe");
-        submitFrame.name = iframeName;
-        submitFrame.style.display = "none";
-        document.body.appendChild(submitFrame);
-      }
-
-      const originalTarget = rsvpForm.getAttribute("target");
-      rsvpForm.setAttribute("target", iframeName);
-      rsvpForm.submit();
-
-      // Restaurar target original
-      if (originalTarget !== null) {
-        rsvpForm.setAttribute("target", originalTarget);
-      } else {
-        rsvpForm.removeAttribute("target");
-      }
-
-      // Como ya validamos que no está duplicado y el submit está funcionando en Sheets,
-      // damos éxito visual estable.
-      window.setTimeout(() => {
-        rsvpForm.reset();
-        syncConditionalRsvpFields();
-        setRsvpStatus("success", "¡Gracias por confirmar! Nos hace muy felices que nos acompañes ❤️");
-        rsvpStatus.classList.remove("is-success");
-        void rsvpStatus.offsetWidth;
-        rsvpStatus.classList.add("is-success");
-        setRsvpSubmittingState(true, "Confirmación enviada");
-        isSubmittingLocked = false;
-
-        clearTimeout(successButtonTimer);
-        successButtonTimer = window.setTimeout(() => {
+    submitRsvpJsonp(
+      {
+        nombre: rawNombre,
+        dni: rawDni,
+        tipoInvitado,
+        edad: rawEdad,
+        restriccionOpcion,
+        restriccionDetalle,
+      },
+      (response) => {
+        if (!response || response.ok !== true) {
+          setRsvpStatus(
+            "error",
+            "No pudimos registrar la confirmación. Revisá la conexión e intentá nuevamente."
+          );
           setRsvpSubmittingState(false);
-        }, 2500);
-      }, 900);
-    });
+          isSubmittingLocked = false;
+          return;
+        }
+
+        if (response.status === "success") {
+          rsvpForm.reset();
+          syncConditionalRsvpFields();
+          setRsvpStatus("success", "¡Gracias por confirmar! Nos hace muy felices que nos acompañes ❤️");
+          setRsvpSubmittingState(true, "Confirmación enviada");
+          isSubmittingLocked = false;
+          return;
+        }
+
+        if (response.status === "duplicate") {
+          setRsvpStatus("error", "Este DNI ya fue registrado.");
+          setRsvpSubmittingState(false);
+          isSubmittingLocked = false;
+          return;
+        }
+
+        setRsvpStatus(
+          "error",
+          "No pudimos registrar la confirmación. Revisá la conexión e intentá nuevamente."
+        );
+        setRsvpSubmittingState(false);
+        isSubmittingLocked = false;
+      },
+      () => {
+        setRsvpStatus(
+          "error",
+          "No pudimos registrar la confirmación. Revisá la conexión e intentá nuevamente."
+        );
+        setRsvpSubmittingState(false);
+        isSubmittingLocked = false;
+      }
+    );
   });
 }
 
-function checkDniExists(dni, callback) {
-  const callbackName = `rsvpCheck_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+function submitRsvpJsonp(formData, onSuccess, onError) {
+  const callbackName = `rsvpSubmit_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
   const script = document.createElement("script");
-
   let finished = false;
+  let timeoutId = null;
 
   const cleanup = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
     if (script.parentNode) script.parentNode.removeChild(script);
     try {
       delete window[callbackName];
-    } catch (e) {
+    } catch (error) {
       window[callbackName] = undefined;
     }
   };
 
-  const finish = (payload) => {
+  const finishSuccess = (payload) => {
     if (finished) return;
     finished = true;
     cleanup();
-    callback(payload);
+    onSuccess(payload);
+  };
+
+  const finishError = () => {
+    if (finished) return;
+    finished = true;
+    cleanup();
+    onError();
   };
 
   window[callbackName] = function (data) {
-    finish(data);
+    finishSuccess(data);
   };
 
   script.onerror = function () {
-    finish({ ok: false, exists: false });
+    finishError();
   };
 
   const url =
-    `${SCRIPT_URL}?mode=checkDni` +
-    `&dni=${encodeURIComponent(dni)}` +
-    `&callback=${encodeURIComponent(callbackName)}`;
+    `${SCRIPT_URL}?mode=registrar` +
+    `&callback=${encodeURIComponent(callbackName)}` +
+    `&nombre=${encodeURIComponent(String(formData.nombre || ""))}` +
+    `&dni=${encodeURIComponent(String(formData.dni || ""))}` +
+    `&tipoInvitado=${encodeURIComponent(String(formData.tipoInvitado || ""))}` +
+    `&edad=${encodeURIComponent(String(formData.edad || ""))}` +
+    `&restriccionOpcion=${encodeURIComponent(String(formData.restriccionOpcion || ""))}` +
+    `&restriccionDetalle=${encodeURIComponent(String(formData.restriccionDetalle || ""))}`;
 
   script.src = url;
   document.body.appendChild(script);
 
-  window.setTimeout(() => {
-    finish({ ok: false, exists: false });
-  }, 15000);
+  timeoutId = window.setTimeout(() => {
+    finishError();
+  }, 12000);
 }
 
 function setRsvpSubmittingState(isSubmitting, buttonText) {
