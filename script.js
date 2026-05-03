@@ -382,6 +382,11 @@ function setupRsvpForm() {
           setRsvpStatus("success", "¡Gracias por confirmar! Nos hace muy felices que nos acompañes ❤️");
           setRsvpSubmittingState(true, "Confirmación enviada");
           isSubmittingLocked = false;
+
+          window.setTimeout(() => {
+            setRsvpSubmittingState(false, "Enviar otra confirmación");
+          }, 2500);
+
           return;
         }
 
