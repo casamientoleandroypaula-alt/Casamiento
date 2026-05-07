@@ -1,7 +1,7 @@
 document.documentElement.classList.add("js");
 
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbznQBRuPBB-YpvEkfc8bP66gTU4-xqrHFM-_ycm2vsjuJeaXUk2xzqsnhyBGVEmhn5bpA/exec";
+  "https://script.google.com/macros/s/AKfycbyh0KXSoM_y0oUa0NQ8jT5ziSj8FGMR2nzhnUuon-jeuQRpvT9nLoOKt1N-lJn8NVHIKw/exec";
 
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
