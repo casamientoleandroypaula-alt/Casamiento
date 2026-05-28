@@ -1060,6 +1060,11 @@ main,
   text-align: center;
 }
 
+.regalo-menores {
+  line-height: 1.55;
+  margin: 4px 0 12px;
+}
+
 .monto-animado {
   display: inline-block;
   animation: montoFade 2.5s ease infinite alternate;
